@@ -76,7 +76,7 @@ def load_parts_table(table_parts):
 # quits the application
 def exit_app():
     # saves log
-    #sys.stdout.close()
+    sys.stdout.close()
     sys.exit()
 # about window
 class About(QMainWindow):
@@ -207,7 +207,7 @@ class Settings(QMainWindow):
         log_file = os.path.join(settings_folder, 'dmdEditor.log')
         if os.path.exists(log_file):
             copyfile(log_file, log_file[:-4] + '-old.log')
-        #sys.stdout = open(log_file, 'w')
+        sys.stdout = open(log_file, 'w')
         # making a settings file
         settings = []
         if os.path.exists(settings_file):
