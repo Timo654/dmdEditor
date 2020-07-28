@@ -1,0 +1,703 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>swap_values</class>
+ <widget class="QMainWindow" name="swap_values">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>964</width>
+    <height>647</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>dmdEditor</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget
+{
+    color: #b1b1b1;
+    background-color: #353535;
+}
+QCheckBox:disabled {
+color: grey;
+}
+#face_model, #hair_model, #tops_model, #btms_model {
+border: 1px solid #121212;
+border-radius: 3px;
+}
+#face_model:on, #hair_model:on, #tops_model:on, #btms_model:on, #face_model:focus, #hair_model:focus, #tops_model:focus, #btms_model:focus {border: 1px solid #53a0ed;}
+
+#pick_game::item:selected, #pick_new_game::item:selected {
+background-color: #388bdd;
+border: none;
+color: black;
+}
+
+QMenu::item:selected {
+color: black;
+background-color:  #388bdd;
+}
+QMenuBar::item:selected {
+color: black;
+background-color: #3884cd ;
+}
+#face_model {
+background-color: #121212;
+color: #CCCCCC;
+}
+
+#hair_model {
+background-color: #121212;
+color: #CCCCCC;
+}
+
+#tops_model {
+background-color: #121212;
+color: #CCCCCC;
+}
+
+#btms_model {
+background-color: #121212;
+color: #CCCCCC;
+}
+
+QLineEdit {
+background-color: #121212;
+color: #CCCCCC;
+}
+QListWidget {
+background-color: #121212;
+color: #CCCCCC;
+}
+QLabel {
+color: #CCCCCC;
+}
+
+QCheckBox {
+background-color: none;
+}
+QScrollBar:horizontal {
+     border: 1px solid #222222;
+     background: #454545;
+     height: 7px;
+     margin: 0px 16px 0 16px;
+}
+
+QScrollBar::handle:horizontal
+{
+     background: #454545;
+      min-height: 20px;
+      border-radius: 2px;
+}
+
+QScrollBar::add-line:horizontal {
+      border: 1px solid #1b1b19;
+      border-radius: 2px;
+      background: #454545;
+      width: 14px;
+      subcontrol-position: right;
+      subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:horizontal {
+      border: 1px solid #1b1b19;
+      border-radius: 2px;
+     background: #454545;
+      width: 14px;
+     subcontrol-position: left;
+     subcontrol-origin: margin;
+}
+
+QScrollBar::right-arrow:horizontal, QScrollBar::left-arrow:horizontal
+{
+      border: 1px solid black;
+      width: 1px;
+      height: 1px;
+      background: black;
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
+{
+      background: none;
+}
+
+QScrollBar:vertical
+{
+      background: #222222;
+      width: 15px;
+      margin: 16px 0 16px 0;
+      border: 1px solid #222222;
+}
+
+QScrollBar::handle:vertical
+{
+      background: #454545;
+      min-height: 20px;
+      border-radius: 2px;
+}
+
+QScrollBar::add-line:vertical
+{
+      border: 1px solid #1b1b19;
+      border-radius: 2px;
+     background: #454545;
+      height: 14px;
+      subcontrol-position: bottom;
+      subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical
+{
+      border: 1px solid #1b1b19;
+      border-radius: 2px;
+    background: #454545;
+      height: 14px;
+      subcontrol-position: top;
+      subcontrol-origin: margin;
+}
+
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
+{
+      border: 1px solid black;
+      width: 1px;
+      height: 1px;
+      background: black;
+}
+
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
+{
+      background: none;
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="model_list_label">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>20</y>
+      <width>71</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Model list</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="save_button">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>840</x>
+      <y>560</y>
+      <width>101</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>Save</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="model_list">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>80</y>
+      <width>451</width>
+      <height>436</height>
+     </rect>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="revert_button">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>560</y>
+      <width>101</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>Revert</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="log_box">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>515</y>
+      <width>451</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+    <property name="html">
+     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Program loaded.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="placeholderText">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="new_model_list">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>80</y>
+      <width>451</width>
+      <height>321</height>
+     </rect>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="new_model_list_label">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>20</y>
+      <width>181</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Select the second model</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="replace_tops_flag">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>450</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Replace top flag</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="replace_face_flag">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>410</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Replace face flag</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="replace_hair_flag">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>430</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Replace hair flag</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="replace_btms_flag">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>470</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Replace bottom flag</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="replace_btms_part">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>470</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Replace bottom part</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="replace_tops_part">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>450</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Replace top part</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="replace_hair_part">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>430</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Replace hair part</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="replace_face_part">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>410</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Replace face part</string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>409</y>
+      <width>461</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="Line" name="line">
+     <property name="geometry">
+      <rect>
+       <x>215</x>
+       <y>10</y>
+       <width>20</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="replace_values_button">
+     <property name="geometry">
+      <rect>
+       <x>125</x>
+       <y>113</y>
+       <width>200</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Replace values</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QComboBox" name="pick_game">
+    <property name="geometry">
+     <rect>
+      <x>368</x>
+      <y>50</y>
+      <width>111</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Yakuza Kiwami 2</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Yakuza 6</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Yakuza Like a Dragon</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Judgment</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="pick_new_game">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>50</y>
+      <width>111</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Yakuza Kiwami 2</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Yakuza 6</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Yakuza Like a Dragon</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Judgment</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLineEdit" name="new_model_search">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>50</y>
+      <width>331</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="placeholderText">
+     <string>Search...</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="search_box">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>50</y>
+      <width>331</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="placeholderText">
+     <string>Search...</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="replace_height">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>490</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Replace height</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="replace_all">
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>490</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Replace all</string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>931</width>
+      <height>540</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+   <zorder>frame_2</zorder>
+   <zorder>frame</zorder>
+   <zorder>model_list_label</zorder>
+   <zorder>save_button</zorder>
+   <zorder>model_list</zorder>
+   <zorder>revert_button</zorder>
+   <zorder>log_box</zorder>
+   <zorder>new_model_list</zorder>
+   <zorder>new_model_list_label</zorder>
+   <zorder>replace_btms_part</zorder>
+   <zorder>replace_tops_part</zorder>
+   <zorder>replace_hair_part</zorder>
+   <zorder>replace_face_part</zorder>
+   <zorder>pick_game</zorder>
+   <zorder>pick_new_game</zorder>
+   <zorder>new_model_search</zorder>
+   <zorder>search_box</zorder>
+   <zorder>replace_all</zorder>
+   <zorder>replace_face_flag</zorder>
+   <zorder>replace_tops_flag</zorder>
+   <zorder>replace_hair_flag</zorder>
+   <zorder>replace_btms_flag</zorder>
+   <zorder>replace_height</zorder>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>964</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSave"/>
+    <addaction name="actionLoad_new_bin"/>
+    <addaction name="actionSettings"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuOptions">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <addaction name="actionSwapFlags"/>
+   </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>About</string>
+    </property>
+    <addaction name="actionAbout_dmdEditor"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuOptions"/>
+   <addaction name="menuAbout"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionSwapFlags">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Use values from another model</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionLoad_new_bin">
+   <property name="text">
+    <string>Load new .bin</string>
+   </property>
+  </action>
+  <action name="actionAbout_dmdEditor">
+   <property name="text">
+    <string>About modeldata2</string>
+   </property>
+  </action>
+ </widget>
+ <tabstops>
+  <tabstop>save_button</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
