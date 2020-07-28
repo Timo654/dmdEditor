@@ -999,7 +999,7 @@ if __name__ == "__main__":
     # makes it not dpi aware, because it breaks the UI otherwise
     if os.name == 'nt':
         # SetProcessDpiAwareness is supported on Windows 8.1+
-        if 'Windows-7' not in platform.platform(): 
+        if 'Windows-7' or 'Windows-8-' not in platform.platform(): 
             awareness = ctypes.c_int()
             ctypes.windll.shcore.SetProcessDpiAwareness(0)
 
