@@ -407,7 +407,7 @@ class swap_values(QMainWindow):
             self.SV.log_box.setText('One or more tables are missing.')
 
     # resets binary_data to default    
-    def cancel(self):
+    def revert(self):
         global binary_data
         with open(input_files, 'rb') as binary_file:
             binary_data = bytearray(binary_file.read())
@@ -584,7 +584,7 @@ class swap_values(QMainWindow):
         self.SV.replace_all.stateChanged.connect(self.replace_all)
 
         # resets the file
-        self.SV.cancel_button.clicked.connect(self.cancel)
+        self.SV.revert_button.clicked.connect(self.revert)
 
         # loads new bin file
         self.SV.actionLoad_new_bin.triggered.connect(self.select_new_bin)
