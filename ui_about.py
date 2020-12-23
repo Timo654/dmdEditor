@@ -3,16 +3,13 @@
 ################################################################################
 ## Form generated from reading UI file 'about.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.15.0
+## Created by: Qt User Interface Compiler version 5.15.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QMetaObject,
-    QObject, QPoint, QRect, QSize, QTime, QUrl, Qt)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
-    QFontDatabase, QIcon, QKeySequence, QLinearGradient, QPalette, QPainter,
-    QPixmap, QRadialGradient)
+from PySide2.QtCore import *
+from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 
@@ -20,7 +17,7 @@ class Ui_About(object):
     def setupUi(self, About):
         if not About.objectName():
             About.setObjectName(u"About")
-        About.resize(400, 287)
+        About.resize(414, 308)
         About.setStyleSheet(u"QWidget\n"
 "{\n"
 "    color: #b1b1b1;\n"
@@ -182,17 +179,17 @@ class Ui_About(object):
 "}")
         self.label = QLabel(About)
         self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(21, 21, 141, 41))
+        self.label.setGeometry(QRect(21, 21, 241, 41))
         font = QFont()
         font.setPointSize(20)
         self.label.setFont(font)
         self.textBrowser = QTextBrowser(About)
         self.textBrowser.setObjectName(u"textBrowser")
-        self.textBrowser.setGeometry(QRect(25, 71, 341, 161))
+        self.textBrowser.setGeometry(QRect(25, 71, 341, 181))
         self.textBrowser.setOpenExternalLinks(True)
         self.pushButton = QPushButton(About)
         self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setGeometry(QRect(300, 250, 75, 23))
+        self.pushButton.setGeometry(QRect(310, 270, 75, 23))
 
         self.retranslateUi(About)
 
@@ -209,13 +206,16 @@ class Ui_About(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Tool for editing character_model_model_data.bin</p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br />Made by Timo654.</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Thanks to MnSXx, Capitan Retraso and etra0 for helping.</p>\n"
-"<p sty"
-                        "le=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Thanks to MikoM, Kent, ketruB, Foas and jason098 for testing.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Thanks to MnSXx, Capitan Retraso, etra0 and SutandoTsukai181 for helpi"
+                        "ng.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Thanks to MikoM, Kent, ketruB, Foas and jason098 for testing.</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Come join us at the Yakuza Modding Community discord server</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://discord.com/invite/WsV9XVE\"><span style=\" font-size:8pt; text-decoration: underline; color:#8fa0ff;\">https://discord.com/invite/WsV9XVE</span></a></p></body></html>", None))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"https://discord.com/invite/WsV9XVE\"><span style=\" font-size:8pt; text-decoration: underline; color:#8fa0ff;\">https://discord.com/invite/WsV9XVE</span></a></p>\n"
+"<p style=\"-qt"
+                        "-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#8fa0ff;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Created using Python and Qt5.</p></body></html>", None))
         self.pushButton.setText(QCoreApplication.translate("About", u"OK", None))
     # retranslateUi
 

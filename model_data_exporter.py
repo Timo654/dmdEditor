@@ -9,13 +9,13 @@ override_args = False
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--input",  help='Input file (model_data.bin)', type=str)
-parser.add_argument("-g", "--game", help="Pick a game. Possible choices are 'lexus2' (Kiwami 2), 'ogref' (Yakuza 6) and 'judge' (Judgment).", type=str)
+parser.add_argument("-g", "--game", help="Pick a game. Possible choices are 'lexus2' (Kiwami 2), 'ogref' (Yakuza 6), 'persona' (Yakuza: Like a Dragon) and 'judge' (Judgment).", type=str)
 args = parser.parse_args()
 
 
 if override_args == True:
     #override input
-    args.input = 'character_model_model_data_judges.bin'
+    args.input = 'character_model_model_data.bin'
     #override game
     args.game = 'lexus2'
 else:
@@ -68,6 +68,7 @@ def get_model_names(binary_data, model_count):
     #get model names
     global df
     model_list_offset = int.from_bytes(binary_data[0x30:0x34], 'little')
+    print(model_list_offset)
     model_names = get_names(binary_data, model_count, model_list_offset)
     model_list_offset_end = model_list_offset + (model_count - 1) * 4
     df = pd.DataFrame()
@@ -79,7 +80,7 @@ def get_puid_order(binary_data, model_count, model_list_offset_end):
     #diff is the difference between offsets
     if game == 'judge' or game == 'ogref':
         puid_order_start_offset = int.from_bytes(binary_data[first_table-24:first_table-20], 'little')
-    elif game == 'lexus2':
+    elif game == 'lexus2' or game == 'persona':
         puid_order_start_offset = int.from_bytes(binary_data[first_table-16:first_table-12], 'little')
 
     puid_order_offsets = [puid_order_start_offset]
@@ -139,7 +140,7 @@ def get_part_order(binary_data, model_count, part_list_offset_end, part_count, d
 
 def get_value(binary_data, model_count):
     another_table = int.from_bytes(binary_data[first_table+24:first_table+28], 'little')
-    if game == 'judge':
+    if game == 'judge' or game == 'persona' or game == 'persona':
         diff = 46
     elif game == 'lexus2':
         diff = 90
@@ -154,7 +155,7 @@ def get_value(binary_data, model_count):
         if i != model_count - 1:
             value_start_offset += 2
             value_offsets.append(value_start_offset)
-    if game == 'lexus2' or game == 'judge':
+    if game == 'lexus2' or game == 'judge' or game == 'persona':
         df['*model'] = values_list
         df['*model offset'] = value_offsets
     elif game == 'ogref':
@@ -162,13 +163,13 @@ def get_value(binary_data, model_count):
         df['*character offset'] = value_offsets
     df.to_csv('modeldata_' + game + '.csv',sep=';', index=False)  
     df.sort_values(by=['character order'], inplace=True)
-    if game == 'judge' or game == 'ogref':
+    if game == 'judge' or game == 'persona' or game == 'ogref':
         get_category(binary_data, model_count, value_start_offset)
     elif game == 'lexus2':
         get_is_reuse(binary_data, model_count, value_start_offset)
 
 def get_is_reuse(binary_data, model_count, value_start_offset):
-    #unused in judgment
+    #unused in judgment and y7
     if game == 'lexus2':
         is_reuse_start_offset = value_start_offset + 6
     elif game == 'ogref':
@@ -200,6 +201,8 @@ def get_category(binary_data, model_count, is_reuse_start_offset):
         diff = 6
     elif game == 'lexus2':
         diff = 1
+    elif game == 'persona':
+        diff = 10
     elif game == 'ogref':
         diff = 4
     category_start_offset = is_reuse_start_offset + diff
@@ -220,16 +223,24 @@ def get_category(binary_data, model_count, is_reuse_start_offset):
 def get_class_id(binary_data, model_count, category_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    elif game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     class_id_start_offset = category_start_offset + diff
     class_id_offsets = [class_id_start_offset]
     class_id_list = []
     for i in range(0, model_count):
-        class_id = binary_data[class_id_start_offset]
+        if game == 'persona':
+            class_id = int.from_bytes(binary_data[class_id_start_offset:class_id_start_offset+2], 'little')
+        else:
+            class_id = binary_data[class_id_start_offset]
         class_id_list.append(class_id)
         if i != model_count - 1:
-            class_id_start_offset += 1
+            if game == 'persona':
+                class_id_start_offset += 2
+            else:
+                class_id_start_offset += 1
             class_id_offsets.append(class_id_start_offset)
         
     df['class id'] = class_id_list
@@ -240,7 +251,7 @@ def get_class_id(binary_data, model_count, category_start_offset):
 def get_age(binary_data, model_count, class_id_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
-    elif game == 'lexus2':
+    elif game == 'lexus2' or game == 'persona':
         diff = 8
     age_start_offset = class_id_start_offset + diff
     age_offsets = [age_start_offset]
@@ -260,6 +271,8 @@ def get_age(binary_data, model_count, class_id_start_offset):
 def get_is_woman(binary_data, model_count, age_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    elif game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     is_woman_start_offset = age_start_offset + diff
@@ -282,7 +295,7 @@ def get_is_woman(binary_data, model_count, age_start_offset):
     df['is_woman'] = is_woman_list
     df['is_woman offset'] = is_woman_offsets
     df.to_csv('modeldata_' + game + '.csv',sep=';', index=False)
-    if game == 'lexus2' or game == 'judge': 
+    if game == 'lexus2' or game == 'judge' or game == 'persona': 
         get_is_face_correct(binary_data, model_count, is_woman_start_offset)
     elif game == 'ogref':
         get_height(binary_data, model_count, is_woman_start_offset)
@@ -290,6 +303,8 @@ def get_is_woman(binary_data, model_count, age_start_offset):
 def get_is_face_correct(binary_data, model_count, is_woman_start_offset):
     if game == 'judge':
         diff = 4
+    elif game == 'persona':
+        diff = 7
     elif game == 'lexus2':
         diff = 1
     elif game == 'ogref':
@@ -314,13 +329,15 @@ def get_is_face_correct(binary_data, model_count, is_woman_start_offset):
     df['is_face_correct'] = is_face_correct_list
     df['is_face_correct offset'] = is_face_correct_offsets
     df.to_csv('modeldata_' + game + '.csv',sep=';', index=False)
-    if game == 'judge' or game == 'lexus2': 
+    if game == 'judge' or game == 'persona' or game == 'lexus2': 
         get_height(binary_data, model_count, is_face_correct_start_offset)
     elif game == 'ogref':
         get_is_invalid(binary_data, model_count, is_face_correct_start_offset)
 def get_height(binary_data, model_count, is_face_correct_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 4
+    elif game == 'persona':
+        diff = 3
     elif game == 'lexus2':
         diff = 1
     height_start_offset = is_face_correct_start_offset + diff
@@ -339,7 +356,7 @@ def get_height(binary_data, model_count, is_face_correct_start_offset):
     get_height_range(binary_data, model_count, height_start_offset)
 
 def get_height_range(binary_data, model_count, height_start_offset):
-    if game == 'judge' or game == 'ogref':
+    if game == 'judge' or game == 'persona' or game == 'ogref':
         diff = 4
     elif game == 'lexus2':
         diff = 8
@@ -361,7 +378,7 @@ def get_height_range(binary_data, model_count, height_start_offset):
 def get_body_type(binary_data, model_count, height_range_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 4
-    elif game == 'lexus2':
+    elif game == 'lexus2' or game == 'persona':
         diff = 8
     body_type_start_offset = height_range_start_offset + diff
     body_type_offsets = [body_type_start_offset]
@@ -381,6 +398,8 @@ def get_body_type(binary_data, model_count, height_range_start_offset):
 def get_language(binary_data, model_count, body_type_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    elif game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     language_start_offset = body_type_start_offset + diff
@@ -396,7 +415,7 @@ def get_language(binary_data, model_count, body_type_start_offset):
     df['language'] = language_list
     df['language offset'] = language_offsets
     df.to_csv('modeldata_' + game + '.csv',sep=';', index=False)
-    if game == 'judge' or game == 'lexus2':
+    if game == 'judge' or game == 'persona' or game == 'lexus2':
         get_bag_type(binary_data, model_count, language_start_offset)
     elif game == 'ogref':
         get_voicer(binary_data, model_count, language_start_offset)
@@ -435,6 +454,8 @@ def get_face_target(binary_data, model_count, voicer_start_offset):
 def get_bag_type(binary_data, model_count, language_start_offset):
     if game == 'judge':
         diff = 2
+    elif game == 'persona':
+        diff = 4
     elif game == 'lexus2' or game == 'ogref':
         diff = 8
     bag_type_start_offset = language_start_offset + diff
@@ -450,7 +471,7 @@ def get_bag_type(binary_data, model_count, language_start_offset):
     df['bag_type'] = bag_type_list
     df['bag_type offset'] = bag_type_offsets
     df.to_csv('modeldata_' + game + '.csv',sep=';', index=False)
-    if game == 'judge' or game == 'lexus2':
+    if game == 'judge' or game == 'persona' or game == 'lexus2':
         get_tex_skin(binary_data, model_count, bag_type_start_offset)
     elif game == 'ogref':
         get_is_face_correct(binary_data, model_count, bag_type_start_offset)
@@ -460,7 +481,7 @@ def get_tex_skin(binary_data, model_count, bag_type_start_offset):
         diff = 2
     elif game == 'lexus2':
         diff = 8
-    elif game == 'ogref':
+    elif game == 'ogref' or game == 'persona':
         diff = 4
     tex_skin_start_offset = bag_type_start_offset + diff
     tex_skin_offsets = [tex_skin_start_offset]
@@ -480,6 +501,8 @@ def get_tex_skin(binary_data, model_count, bag_type_start_offset):
 def get_tex_face1(binary_data, model_count, tex_skin_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    elif game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     
@@ -501,6 +524,8 @@ def get_tex_face1(binary_data, model_count, tex_skin_start_offset):
 def get_tex_face2(binary_data, model_count, tex_face1_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    if game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     
@@ -522,6 +547,8 @@ def get_tex_face2(binary_data, model_count, tex_face1_start_offset):
 def get_tex_face3(binary_data, model_count, tex_face2_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    if game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     
@@ -543,6 +570,8 @@ def get_tex_face3(binary_data, model_count, tex_face2_start_offset):
 def get_tex_face4(binary_data, model_count, tex_face3_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    if game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     
@@ -564,6 +593,8 @@ def get_tex_face4(binary_data, model_count, tex_face3_start_offset):
 def get_tex_hair1(binary_data, model_count, tex_face4_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    if game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     
@@ -585,6 +616,8 @@ def get_tex_hair1(binary_data, model_count, tex_face4_start_offset):
 def get_tex_hair2(binary_data, model_count, tex_hair1_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    if game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     
@@ -606,6 +639,8 @@ def get_tex_hair2(binary_data, model_count, tex_hair1_start_offset):
 def get_tex_tops1(binary_data, model_count, tex_hair2_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    if game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     
@@ -627,6 +662,8 @@ def get_tex_tops1(binary_data, model_count, tex_hair2_start_offset):
 def get_tex_tops2(binary_data, model_count, tex_tops1_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    if game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     
@@ -648,6 +685,8 @@ def get_tex_tops2(binary_data, model_count, tex_tops1_start_offset):
 def get_tex_tops3(binary_data, model_count, tex_tops2_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    if game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     
@@ -669,6 +708,8 @@ def get_tex_tops3(binary_data, model_count, tex_tops2_start_offset):
 def get_tex_tops4(binary_data, model_count, tex_tops3_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    if game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     
@@ -690,6 +731,8 @@ def get_tex_tops4(binary_data, model_count, tex_tops3_start_offset):
 def get_tex_btms1(binary_data, model_count, tex_tops4_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    if game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     
@@ -711,6 +754,8 @@ def get_tex_btms1(binary_data, model_count, tex_tops4_start_offset):
 def get_tex_btms2(binary_data, model_count, tex_btms1_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    if game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     
@@ -732,6 +777,8 @@ def get_tex_btms2(binary_data, model_count, tex_btms1_start_offset):
 def get_tex_btms3(binary_data, model_count, tex_btms2_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    if game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     
@@ -753,6 +800,8 @@ def get_tex_btms3(binary_data, model_count, tex_btms2_start_offset):
 def get_dedit_category(binary_data, model_count, tex_btms3_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    if game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     dedit_category_start_offset = tex_btms3_start_offset + diff
@@ -773,19 +822,21 @@ def get_dedit_category(binary_data, model_count, tex_btms3_start_offset):
 def get_dedit(binary_data, model_count, dedit_category_start_offset):
     if game == 'judge' or game == 'ogref':
         diff = 2
+    if game == 'persona':
+        diff = 4
     elif game == 'lexus2':
         diff = 8
     dedit_start_offset = dedit_category_start_offset + diff
     dedit_offsets = [dedit_start_offset]
     dedit_list = []
     for i in range(0, model_count):
-        if game == 'judge':
+        if game == 'judge' or game == 'persona' or game == 'persona':
             dedit = int.from_bytes(binary_data[dedit_start_offset:dedit_start_offset+4], 'little')
         elif game == 'lexus2' or game == 'ogref':
             dedit = int.from_bytes(binary_data[dedit_start_offset:dedit_start_offset+2], 'little')
         dedit_list.append(dedit)
         if i != model_count - 1:
-            if game == 'judge':
+            if game == 'judge' or game == 'persona' or game == 'persona':
                 dedit_start_offset += 4
             elif game == 'lexus2' or game == 'ogref':
                 dedit_start_offset += 2
@@ -797,7 +848,7 @@ def get_dedit(binary_data, model_count, dedit_category_start_offset):
     get_face(binary_data, model_count, dedit_start_offset)
 
 def get_face(binary_data, model_count, dedit_start_offset):
-    if game == 'judge' or game == 'lexus2':
+    if game == 'judge' or game == 'persona' or game == 'lexus2':
         diff = 8
     elif game == 'ogref':
         diff = 4
@@ -817,7 +868,7 @@ def get_face(binary_data, model_count, dedit_start_offset):
     get_hair(binary_data, model_count, face_start_offset)
 
 def get_hair(binary_data, model_count, face_start_offset):
-    if game == 'judge' or game == 'lexus2':
+    if game == 'judge' or game == 'persona' or game == 'lexus2':
         diff = 8
     elif game == 'ogref':
         diff = 4
@@ -837,7 +888,7 @@ def get_hair(binary_data, model_count, face_start_offset):
     get_tops(binary_data, model_count, hair_start_offset)  
 
 def get_tops(binary_data, model_count, hair_start_offset):
-    if game == 'judge' or game == 'lexus2':
+    if game == 'judge' or game == 'persona' or game == 'lexus2':
         diff = 8
     elif game == 'ogref':
         diff = 4
@@ -857,7 +908,7 @@ def get_tops(binary_data, model_count, hair_start_offset):
     get_btms(binary_data, model_count, tops_start_offset)
 
 def get_btms(binary_data, model_count, tops_start_offset):
-    if game == 'judge' or game == 'lexus2':
+    if game == 'judge' or game == 'persona' or game == 'lexus2':
         diff = 8
     elif game == 'ogref':
         diff = 4
@@ -877,7 +928,7 @@ def get_btms(binary_data, model_count, tops_start_offset):
     get_face_flags(binary_data, model_count, btms_start_offset)
 
 def get_face_flags(binary_data, model_count, btms_start_offset):
-    if game == 'judge' or game == 'lexus2':
+    if game == 'judge' or game == 'persona' or game == 'lexus2':
         diff = 8
     elif game == 'ogref':
         diff = 4
@@ -945,7 +996,7 @@ def get_btms_flags(binary_data, model_count, tops_flags_start_offset):
     df['btms_flags'] = btms_flags_list
     df['btms_flags offset'] = btms_flags_offsets
     df.to_csv('modeldata_' + game + '.csv',sep=';', index=False)
-    if game == 'judge' or game == 'lexus2': 
+    if game == 'judge' or game == 'persona' or game == 'lexus2': 
         get_cloth_physics(binary_data, model_count, btms_flags_start_offset)
     elif game == 'ogref':
         get_bag_type(binary_data, model_count, btms_flags_start_offset)
@@ -976,6 +1027,8 @@ def get_cloth_physics(binary_data, model_count, btms_flags_start_offset):
 def get_shoes_kind(binary_data, model_count, cloth_physics_start_offset):
     if game == 'judge':
         diff = 4
+    elif game == 'persona':
+        diff = 3
     elif game == 'lexus2' or game == 'ogref':
         diff = 1
     shoes_kind_start_offset = cloth_physics_start_offset + diff
@@ -996,7 +1049,7 @@ def get_shoes_kind(binary_data, model_count, cloth_physics_start_offset):
 def get_auto_wrinkle_scale(binary_data, model_count, shoes_kind_start_offset):
     if game == 'judge':
         diff = 2
-    elif game == 'lexus2' or game == 'ogref':
+    elif game == 'lexus2' or game == 'ogref' or game == 'persona':
         diff = 8
     auto_wrinkle_scale_start_offset = shoes_kind_start_offset + diff
     auto_wrinkle_scale_offsets = [auto_wrinkle_scale_start_offset]
@@ -1011,7 +1064,7 @@ def get_auto_wrinkle_scale(binary_data, model_count, shoes_kind_start_offset):
     df['auto_wrinke_scale'] = auto_wrinkle_scale_list
     df['auto_wrinkle_scale offset'] = auto_wrinkle_scale_offsets
     df.to_csv('modeldata_' + game + '.csv',sep=';', index=False)
-    if game == 'judge':
+    if game == 'judge' or game == 'persona' or game == 'persona':
         get_can_sit(binary_data, model_count, auto_wrinkle_scale_start_offset)
 
 def get_can_sit(binary_data, model_count, auto_wrinkle_scale_start_offset):
@@ -1058,6 +1111,8 @@ def get_is_use_fur(binary_data, model_count, can_sit_start_offset):
     df['is_use_fur'] = is_use_fur_list
     df['is_use_fur offset'] = is_use_fur_offsets
     df.to_csv('modeldata_' + game + '.csv',sep=';', index=False)
+    if game == 'persona':
+        get_ui_face_texture(binary_data, model_count, is_use_fur_start_offset)
 
 def get_is_invalid(binary_data, model_count, is_face_correct_start_offset):
     is_invalid_start_offset = is_face_correct_start_offset + 4
@@ -1097,5 +1152,22 @@ def get_org_id(binary_data, model_count, is_invalid_start_offset):
     df['org_id offset'] = org_id_offsets
     df.to_csv('modeldata_' + game + '.csv',sep=';', index=False) 
     get_is_reuse(binary_data, model_count, org_id_start_offset)
+
+def get_ui_face_texture(binary_data, model_count, get_is_use_fur_start_offset):
+    diff = 6
+    ui_face_texture_start_offset = get_is_use_fur_start_offset + diff
+    ui_face_texture_offsets = [ui_face_texture_start_offset]
+    ui_face_texture_list = []
+    for i in range(0, model_count):
+        ui_face_texture = int.from_bytes(binary_data[ui_face_texture_start_offset:ui_face_texture_start_offset+2], 'little')
+        ui_face_texture_list.append(ui_face_texture)
+        if i != model_count - 1:
+            ui_face_texture_start_offset += 2
+            ui_face_texture_offsets.append( ui_face_texture_start_offset)
+        
+    df['ui_face_texture'] =  ui_face_texture_list
+    df['ui_face_texture offset'] =  ui_face_texture_offsets
+    df.to_csv('modeldata_' + game + '.csv',sep=';', index=False)
+  
 get_model_names(binary_data, model_count)
 print('file saved')

@@ -3,16 +3,13 @@
 ################################################################################
 ## Form generated from reading UI file 'edit_values.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.15.0
+## Created by: Qt User Interface Compiler version 5.15.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QMetaObject,
-    QObject, QPoint, QRect, QSize, QTime, QUrl, Qt)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
-    QFontDatabase, QIcon, QKeySequence, QLinearGradient, QPalette, QPainter,
-    QPixmap, QRadialGradient)
+from PySide2.QtCore import *
+from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 
@@ -197,7 +194,7 @@ class Ui_edit_values(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.modellist_label = QLabel(self.centralwidget)
         self.modellist_label.setObjectName(u"modellist_label")
-        self.modellist_label.setGeometry(QRect(30, 20, 81, 16))
+        self.modellist_label.setGeometry(QRect(30, 20, 131, 16))
         font = QFont()
         font.setPointSize(12)
         self.modellist_label.setFont(font)
@@ -212,7 +209,7 @@ class Ui_edit_values(object):
         self.partflaginfo.setStyleSheet(u"")
         self.face_label = QLabel(self.partflaginfo)
         self.face_label.setObjectName(u"face_label")
-        self.face_label.setGeometry(QRect(20, 20, 61, 21))
+        self.face_label.setGeometry(QRect(20, 20, 101, 21))
         font2 = QFont()
         font2.setPointSize(12)
         font2.setUnderline(False)
@@ -220,7 +217,7 @@ class Ui_edit_values(object):
         self.face_label.setFont(font2)
         self.height_label = QLabel(self.partflaginfo)
         self.height_label.setObjectName(u"height_label")
-        self.height_label.setGeometry(QRect(20, 420, 61, 21))
+        self.height_label.setGeometry(QRect(20, 420, 101, 21))
         self.height_label.setFont(font2)
         self.flag1_label = QLabel(self.partflaginfo)
         self.flag1_label.setObjectName(u"flag1_label")
@@ -251,11 +248,11 @@ class Ui_edit_values(object):
         self.flag3_label.setGeometry(QRect(30, 280, 31, 16))
         self.tops_label = QLabel(self.partflaginfo)
         self.tops_label.setObjectName(u"tops_label")
-        self.tops_label.setGeometry(QRect(20, 220, 61, 21))
+        self.tops_label.setGeometry(QRect(20, 220, 81, 21))
         self.tops_label.setFont(font2)
         self.btms_label = QLabel(self.partflaginfo)
         self.btms_label.setObjectName(u"btms_label")
-        self.btms_label.setGeometry(QRect(20, 320, 61, 21))
+        self.btms_label.setGeometry(QRect(20, 320, 111, 21))
         self.btms_label.setFont(font2)
         self.hair_label = QLabel(self.partflaginfo)
         self.hair_label.setObjectName(u"hair_label")
@@ -491,8 +488,8 @@ class Ui_edit_values(object):
         self.log_box.setHtml(QCoreApplication.translate("edit_values", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Program loaded.</p></body></html>", None))
+"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:6.6pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8.25pt;\">Program loaded.</span></p></body></html>", None))
         self.log_box.setPlaceholderText("")
         self.pick_game.setItemText(0, QCoreApplication.translate("edit_values", u"Yakuza Kiwami 2", None))
         self.pick_game.setItemText(1, QCoreApplication.translate("edit_values", u"Yakuza 6", None))

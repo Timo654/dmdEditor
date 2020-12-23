@@ -3,16 +3,13 @@
 ################################################################################
 ## Form generated from reading UI file 'swap_values.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.15.0
+## Created by: Qt User Interface Compiler version 5.15.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QMetaObject,
-    QObject, QPoint, QRect, QSize, QTime, QUrl, Qt)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
-    QFontDatabase, QIcon, QKeySequence, QLinearGradient, QPalette, QPainter,
-    QPixmap, QRadialGradient)
+from PySide2.QtCore import *
+from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 
@@ -198,7 +195,7 @@ class Ui_swap_values(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.model_list_label = QLabel(self.centralwidget)
         self.model_list_label.setObjectName(u"model_list_label")
-        self.model_list_label.setGeometry(QRect(30, 20, 71, 16))
+        self.model_list_label.setGeometry(QRect(30, 20, 211, 16))
         font = QFont()
         font.setPointSize(12)
         self.model_list_label.setFont(font)
@@ -233,7 +230,7 @@ class Ui_swap_values(object):
         self.new_model_list.setEditTriggers(QAbstractItemView.DoubleClicked|QAbstractItemView.EditKeyPressed|QAbstractItemView.SelectedClicked)
         self.new_model_list_label = QLabel(self.centralwidget)
         self.new_model_list_label.setObjectName(u"new_model_list_label")
-        self.new_model_list_label.setGeometry(QRect(490, 20, 181, 16))
+        self.new_model_list_label.setGeometry(QRect(490, 20, 351, 16))
         self.new_model_list_label.setFont(font)
         self.replace_tops_flag = QCheckBox(self.centralwidget)
         self.replace_tops_flag.setObjectName(u"replace_tops_flag")
@@ -374,8 +371,8 @@ class Ui_swap_values(object):
         self.log_box.setHtml(QCoreApplication.translate("swap_values", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Program loaded.</p></body></html>", None))
+"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:6.6pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8.25pt;\">Program loaded.</span></p></body></html>", None))
         self.log_box.setPlaceholderText("")
         self.new_model_list_label.setText(QCoreApplication.translate("swap_values", u"Select the second model", None))
         self.replace_tops_flag.setText(QCoreApplication.translate("swap_values", u"Replace top flag", None))

@@ -24,6 +24,52 @@ def save_file(input_files, binary_data):
         f.write(binary_data)
         print(input_files + " saved.") 
 
+# remembers table index
+def set_table_index(self, table, window, model, model_second):
+    global current_table1_selection
+    global current_table2_selection
+    main_table_count = len(df_main['character names'])
+    try:
+        second_table_count = len(df_second['character names'])
+    except:
+        pass
+
+    if window == 'edit_values':
+        model_list_model = self.ui.model_list.model()
+        try:
+            current_table1_selection
+        except(NameError): # default is 0
+            current_table1_selection = 0
+        if model != None:
+            current_table1_selection = model
+        if current_table1_selection > main_table_count:
+            current_table1_selection = 0
+        current_model_index = model_list_model.index(current_table1_selection)
+        self.ui.model_list.setCurrentIndex(current_model_index)
+        
+    if window == 'swap_values':
+        if table == 'main':
+            model_list_model = self.SV.model_list.model()
+            if model != None:
+                current_table1_selection = model
+            if current_table1_selection > main_table_count:
+                current_table1_selection = 0
+            current_model_index = model_list_model.index(current_table1_selection)
+            self.SV.model_list.setCurrentIndex(current_model_index)
+
+        elif table == 'second':
+            second_model_list_model = self.SV.new_model_list.model()
+            try:
+                current_table2_selection
+            except(NameError): # default is 0
+                current_table2_selection = 0
+            if model_second != None:
+                current_table2_selection = model_second
+            if current_table2_selection > second_table_count:
+                current_table2_selection = 0
+            current_model2_index = second_model_list_model.index(current_table2_selection)
+            self.SV.new_model_list.setCurrentIndex(current_model2_index)
+
 # verifies input bin file
 def verify_input_file(input_files):
     with open(input_files, 'rb') as binary_file:
@@ -76,7 +122,7 @@ def load_parts_table(table_parts):
 # quits the application
 def exit_app():
     # saves log
-    sys.stdout.close()
+    #sys.stdout.close()
     sys.exit()
 # about window
 class About(QMainWindow):
@@ -87,7 +133,7 @@ class About(QMainWindow):
         self.about= Ui_About()
         self.about.setupUi(self)
         # sets fixed window size
-        self.setFixedSize(400, 287)
+        self.setFixedSize(425, 300)
         # closes about window   
         self.about.pushButton.clicked.connect(self.accept) 
 
@@ -102,7 +148,7 @@ class Settings(QMainWindow):
         if dialog.exec_():
             fileNames = dialog.selectedFiles()  
             return fileNames[0]
-
+# TODO: use dict
     # select specific files
     def select_bin(self):
         title = "Select the model_data.bin file"
@@ -384,6 +430,7 @@ class swap_values(QMainWindow):
                 self.SV.model_list.addItems(df_main['character names'])
                 # filters 1st table search
                 self.on_text_change(self.SV.new_model_search.text(), 'main')
+                set_table_index(self, 'main', 'swap_values', None, None)
             if table_type == 'second' or table_type == 'both':
                 self.SV.new_model_list.clear()
                 if self.SV.pick_new_game.currentIndex() == 0:
@@ -401,6 +448,7 @@ class swap_values(QMainWindow):
                 self.SV.new_model_list.addItems(df_second['character names'])
                 # filters 2nd table search
                 self.on_text_change(self.SV.new_model_search.text(), 'second')
+                set_table_index(self, 'second', 'swap_values', None, None)
             self.can_swap_parts()
             self.SV.log_box.setText('New table loaded successfully.')
         except(FileNotFoundError):
@@ -460,7 +508,7 @@ class swap_values(QMainWindow):
             self.SV.replace_btms_flag.setEnabled(True)
             self.SV.replace_height.setEnabled(True)
 
-    # filters model list
+    # search
     def on_text_change(self, text, table_type):
         # replaces spaces with '_' for easier searching
         text = text.replace(' ', '_')
@@ -470,14 +518,16 @@ class swap_values(QMainWindow):
         elif table_type == 'second':
             range_1 = self.SV.new_model_list.count()
             item = self.SV.new_model_list.item
-
         for row in range(range_1):
             it = item(row)
-            text = text.lower()
-            if text:
-                it.setHidden(not self.text_filter(text, it.text().lower()))
-            else:
-                it.setHidden(False)
+            text_list = text.lower().split('_') # make the search into a list
+            included = True
+            for t in text_list:
+                if t:
+                    if not self.text_filter(t, it.text().lower()):
+                        included = False
+                        break
+            it.setHidden(not included)
 
     def text_filter(self, text, keywords):
         return text in keywords
@@ -510,19 +560,13 @@ class swap_values(QMainWindow):
         self.SV.log_box.setText('Saved bin file. Old file saved as ' + os.path.basename(input_files) + '-old.bin' )
 
     def selectionChanged(self, table):
-        global current_table1_selection
-        global current_table2_selection
         # saves new index
         if table == 'main':
             model = df_main[df_main['character names'] == self.SV.model_list.currentItem().text()].index[0]
-            model_list_model = self.SV.model_list.model()
-            current_table1_selection = model
-            current_model_index = model_list_model.index(current_table1_selection)
+            set_table_index(self, table, 'swap_values', model, None)
         elif table == 'second':
             model_second = df_second[df_second['character names'] == self.SV.new_model_list.currentItem().text()].index[0]
-            second_model_list_model = self.SV.new_model_list.model()
-            current_table2_selection = model_second
-            current_model2_index = second_model_list_model.index(current_table2_selection)
+            set_table_index(self, table, 'swap_values', None, model_second)
 
     def __init__(self):
         global current_table2_selection
@@ -554,22 +598,9 @@ class swap_values(QMainWindow):
         self.SV.search_box.textChanged.connect(lambda: self.on_text_change(self.SV.search_box.text(), 'main'))
         self.SV.new_model_search.textChanged.connect(lambda: self.on_text_change(self.SV.new_model_search.text(), 'second'))
 
-        # sets first table index
-        model_list_model = self.SV.model_list.model()
-        current_model_index = model_list_model.index(current_table1_selection)
-        self.SV.model_list.setCurrentIndex(current_model_index)
-
         # saves new index when selection is changed
         self.SV.model_list.itemSelectionChanged.connect(lambda: self.selectionChanged('main'))
 
-        # sets second table index
-        second_model_list_model = self.SV.new_model_list.model()
-        try:
-            current_table2_selection
-        except(NameError): #default is 0
-            current_table2_selection = 0
-        current_model2_index = second_model_list_model.index(current_table2_selection)
-        self.SV.new_model_list.setCurrentIndex(current_model2_index)
         # saves new index when selection is changed
         self.SV.new_model_list.itemSelectionChanged.connect(lambda: self.selectionChanged('second'))
 
@@ -700,20 +731,17 @@ class edit_values(QMainWindow):
 
             #filters based on search
             self.on_text_change(self.ui.searchBox.text())
-
+            set_table_index(self, 'main', 'edit_values', None, None)
             self.ui.log_box.setText('New table loaded successfully.')
         except(FileNotFoundError):
             self.ui.log_box.setText('One or more tables are missing.')
 
     # update values
     def selectionChanged(self):
-        global current_table1_selection
         try:
             model = df_main[df_main['character names'] == self.ui.model_list.currentItem().text()].index[0]
             # saves model index
-            model_list_model = self.ui.model_list.model()
-            current_table1_selection = model
-            current_model_index = model_list_model.index(current_table1_selection)
+            set_table_index(self, 'main', 'edit_values', model, None)
 
             # parts
             self.ui.face_part.setText(int_to_hex(int.from_bytes(binary_data[df_main['face offset'].iloc[model]:df_main['face offset'].iloc[model]+4], 'little'), 'part'))
@@ -761,18 +789,22 @@ class edit_values(QMainWindow):
 
     # search
     def on_text_change(self, text):
-        # replaces spaces with '_' for easier searching
+    # replaces spaces with '_' for easier searching
         text = text.replace(' ', '_')
         for row in range(self.ui.model_list.count()):
             it = self.ui.model_list.item(row)
-            text = text.lower()
-            if text:
-                it.setHidden(not self.text_filter(text, it.text().lower()))
-            else:
-                it.setHidden(False)
+            text_list = text.lower().split('_') # turns it to a list
+            included = True
+            for t in text_list:
+                if t:
+                    if not self.text_filter(t, it.text().lower()):
+                        included = False
+                        break
+            it.setHidden(not included)
 
     def text_filter(self, text, keywords):
         return text in keywords
+        
 
     # disable usage of non hex characters
     def validate_input(self, decimal_height):
@@ -882,7 +914,6 @@ class edit_values(QMainWindow):
         self.ui.log_box.setText('Saved bin file. Old file saved as ' + os.path.basename(input_files) + '-old.bin' )
     
     def __init__(self):
-        global current_table1_selection
         global input_files
         global binary_data
 
@@ -929,16 +960,6 @@ class edit_values(QMainWindow):
         # convert hex height to decimal
         self.ui.is_decimal_height.stateChanged.connect(self.height_to_decimal)
 
-        # saves selected model index
-        model_list_model = self.ui.model_list.model()
-
-        try:
-            current_table1_selection
-        except(NameError): # default is 0
-            current_table1_selection = 0
-        current_model_index = model_list_model.index(current_table1_selection)
-        self.ui.model_list.setCurrentIndex(current_model_index)
-    
         # updates values on startup
         self.selectionChanged()
 
@@ -1001,7 +1022,7 @@ class edit_values(QMainWindow):
 if __name__ == "__main__":
     # makes it not dpi aware, because it breaks the UI otherwise
     if os.name == 'nt':
-        # SetProcessDpiAwareness is supported on Windows 8.1+
+        #SetProcessDpiAwareness is supported on Windows 8.1+
         if 'Windows-7' or 'Windows-8-' not in platform.platform(): 
             awareness = ctypes.c_int()
             ctypes.windll.shcore.SetProcessDpiAwareness(0)

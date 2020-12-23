@@ -3,16 +3,13 @@
 ################################################################################
 ## Form generated from reading UI file 'settings.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.15.0
+## Created by: Qt User Interface Compiler version 5.15.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QMetaObject,
-    QObject, QPoint, QRect, QSize, QTime, QUrl, Qt)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
-    QFontDatabase, QIcon, QKeySequence, QLinearGradient, QPalette, QPainter,
-    QPixmap, QRadialGradient)
+from PySide2.QtCore import *
+from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 
@@ -157,7 +154,7 @@ class Ui_Settings(object):
         self.ogref_parts_label.setGeometry(QRect(50, 240, 201, 20))
         self.settings_label = QLabel(Settings)
         self.settings_label.setObjectName(u"settings_label")
-        self.settings_label.setGeometry(QRect(40, 20, 61, 31))
+        self.settings_label.setGeometry(QRect(40, 20, 151, 31))
         font = QFont()
         font.setPointSize(12)
         self.settings_label.setFont(font)

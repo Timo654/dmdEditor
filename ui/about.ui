@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>287</height>
+    <width>414</width>
+    <height>308</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -176,7 +176,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
     <rect>
      <x>21</x>
      <y>21</y>
-     <width>141</width>
+     <width>241</width>
      <height>41</height>
     </rect>
    </property>
@@ -195,7 +195,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
      <x>25</x>
      <y>71</y>
      <width>341</width>
-     <height>161</height>
+     <height>181</height>
     </rect>
    </property>
    <property name="html">
@@ -206,12 +206,14 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Tool for editing character_model_model_data.bin&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;Made by Timo654.&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Thanks to MnSXx, Capitan Retraso and etra0 for helping.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Thanks to MnSXx, Capitan Retraso, etra0 and SutandoTsukai181 for helping.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Thanks to MikoM, Kent, ketruB, Foas and jason098 for testing.&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Come join us at the Yakuza Modding Community discord server&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://discord.com/invite/WsV9XVE&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#8fa0ff;&quot;&gt;https://discord.com/invite/WsV9XVE&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://discord.com/invite/WsV9XVE&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#8fa0ff;&quot;&gt;https://discord.com/invite/WsV9XVE&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; text-decoration: underline; color:#8fa0ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Created using Python and Qt5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="openExternalLinks">
     <bool>true</bool>
@@ -220,8 +222,8 @@ p, li { white-space: pre-wrap; }
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>250</y>
+     <x>310</x>
+     <y>270</y>
      <width>75</width>
      <height>23</height>
     </rect>
