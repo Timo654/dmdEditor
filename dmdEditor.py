@@ -2,9 +2,9 @@ from ui_edit_values import Ui_edit_values
 from ui_swap_values import Ui_swap_values
 from ui_settings import Ui_Settings
 from ui_about import Ui_About
-from PySide2.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
-from PySide2.QtCore import QFile, QRegExp, Qt
-from PySide2.QtGui import QRegExpValidator, QPalette, QColor, QIcon
+from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
+from PySide6.QtCore import QFile, QRegularExpression, Qt
+from PySide6.QtGui import QRegularExpressionValidator, QPalette, QColor, QIcon
 import os
 import platform
 from shutil import copyfile
@@ -145,7 +145,7 @@ class Settings(QMainWindow):
         dialog.setWindowTitle(title)
         dialog.selectFile(file)
         dialog.setFileMode(QFileDialog.ExistingFile)
-        if dialog.exec_():
+        if dialog.exec():
             fileNames = dialog.selectedFiles()  
             return fileNames[0]
 # TODO: use dict
@@ -808,9 +808,9 @@ class edit_values(QMainWindow):
 
     # disable usage of non hex characters
     def validate_input(self, decimal_height):
-        reg_ex = QRegExp('^[a-fA-F0-9]*$')
-        input_validator = QRegExpValidator(reg_ex)
-        height_validator = QRegExpValidator(QRegExp('^[0-9]*$'))
+        reg_ex = QRegularExpression('^[a-fA-F0-9]*$')
+        input_validator = QRegularExpressionValidator(reg_ex)
+        height_validator = QRegularExpressionValidator(QRegularExpression('^[0-9]*$'))
 
         self.ui.face_part.setValidator(input_validator)
         self.ui.hair_part.setValidator(input_validator)
@@ -1021,11 +1021,9 @@ class edit_values(QMainWindow):
 
 if __name__ == "__main__":
     # makes it not dpi aware, because it breaks the UI otherwise
-    if os.name == 'nt':
-        #SetProcessDpiAwareness is supported on Windows 8.1+
-        if 'Windows-7' or 'Windows-8-' not in platform.platform(): 
-            awareness = ctypes.c_int()
-            ctypes.windll.shcore.SetProcessDpiAwareness(0)
+    # TODO - verify if this is still needed
+    #if os.name == 'nt':
+    #    ctypes.windll.user32.SetProcessDPIAware()
 
     app = QApplication(sys.argv)
     
@@ -1061,4 +1059,4 @@ if __name__ == "__main__":
     window = edit_values()
     window.show()
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

@@ -3,15 +3,24 @@
 ################################################################################
 ## Form generated from reading UI file 'swap_values.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.15.1
+## Created by: Qt User Interface Compiler version 6.5.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import *
-from PySide2.QtGui import *
-from PySide2.QtWidgets import *
-
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
+    QCursor, QFont, QFontDatabase, QGradient,
+    QIcon, QImage, QKeySequence, QLinearGradient,
+    QPainter, QPalette, QPixmap, QRadialGradient,
+    QTransform)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox,
+    QFrame, QLabel, QLineEdit, QListWidget,
+    QListWidgetItem, QMainWindow, QMenu, QMenuBar,
+    QPushButton, QSizePolicy, QStatusBar, QTextEdit,
+    QWidget)
 
 class Ui_swap_values(object):
     def setupUi(self, swap_values):
@@ -205,7 +214,6 @@ class Ui_swap_values(object):
         self.save_button.setGeometry(QRect(840, 560, 101, 41))
         font1 = QFont()
         font1.setBold(False)
-        font1.setWeight(50)
         self.save_button.setFont(font1)
         self.save_button.setAutoFillBackground(False)
         self.save_button.setCheckable(False)
